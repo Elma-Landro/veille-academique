@@ -1,0 +1,72 @@
+name: Deploy React App to GitHub Pages
+
+# Quand ce workflow se déclenche
+on:
+  push:
+    branches: [ main ]  # À chaque push sur la branche main
+  pull_request:
+    branches: [ main ]
+
+# Permissions nécessaires pour GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un seul job à la fois
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Job pour build et déployer l'app React
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    
+    steps:
+    # 1. Récupérer le code du repository
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    # 2. Installer Node.js (pour React)
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    # 3. Installer les dépendances React
+    - name: Install dependencies
+      run: |
+        cd frontend
+        npm ci
+    
+    # 4. Build l'application React
+    - name: Build React app
+      run: |
+        cd frontend
+        npm run build
+      env:
+        # Configuration pour GitHub Pages
+        PUBLIC_URL: /veille-academique
+    
+    # 5. Configurer GitHub Pages
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+    
+    # 6. Upload les fichiers buildés
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        # Upload du dossier dist/ créé par Vite
+        path: frontend/dist
+    
+    # 7. Déployer sur GitHub Pages
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+
