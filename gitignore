@@ -1,0 +1,71 @@
+# Fichiers et dossiers à ignorer par Git
+
+# Environnements virtuels Python
+venv/
+env/
+.env
+.venv
+
+# Dépendances Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Fichiers de build
+dist/
+build/
+.next/
+out/
+
+# Fichiers Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Fichiers de configuration locale
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+
+# Fichiers temporaires
+.tmp/
+.cache/
+.parcel-cache/
+
+# Fichiers IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Données de scraping
+*.json
+*.csv
+*.xlsx
+!example.json
+
+# Clés API et secrets
+secrets.py
+config_local.py
+.env.secret
+
+# Fichiers de test
+test_results/
+screenshots/
+
