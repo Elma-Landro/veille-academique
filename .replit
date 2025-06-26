@@ -5,4 +5,35 @@ run = "Run veille académique "
 channel = "stable-24_05"
 
 [deployment]
-run = ["sh", "-c", "Run veille académique "]
+run = ["sh", "-c", "cd backend && python src/main.py"]
+build = ["sh", "-c", "cd frontend && npm install && npm run build && cp -r dist/* ../backend/src/static/"]
+
+[workflows]
+runButton = "Backend Server"
+
+[[workflows.workflow]]
+name = "Backend Server"
+author = 44225636
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd backend && python src/main.py"
+
+[[workflows.workflow]]
+name = "Frontend Dev"
+author = 44225636
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd frontend && npm install && npm run dev"
+
+[[workflows.workflow]]
+name = "Manual Scraping"
+author = 44225636
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd scraper && python scraper.py"

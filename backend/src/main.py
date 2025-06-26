@@ -14,7 +14,7 @@ app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'sta
 app.config['SECRET_KEY'] = 'veille_academique_secret_key_2025'
 
 # Configuration CORS pour permettre les requêtes depuis le frontend
-CORS(app, origins=["http://localhost:5173", "http://localhost:3000"])
+CORS(app, origins=["http://localhost:5173", "http://localhost:3000", "https://*.replit.app", "https://*.replit.dev"], supports_credentials=True)
 
 # Enregistrement des blueprints
 app.register_blueprint(user_bp, url_prefix='/api')
@@ -65,5 +65,6 @@ def serve(path):
             })
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
 
